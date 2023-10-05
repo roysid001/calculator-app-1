@@ -1,0 +1,13 @@
+.buttonBox {
+    display: grid;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: rebeccapurple;
+    height: calc(100% - 110px);
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-gap: 10px;
+    border-radius: 9px;
+    box-sizing: border-box;
+}

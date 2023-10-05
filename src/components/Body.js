@@ -1,5 +1,4 @@
 import './Body.css';
-import './Screen.js';
 
 function Body ({children}) {
     return (
