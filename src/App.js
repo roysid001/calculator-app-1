@@ -15,48 +15,71 @@ const btnValues = [
 
 function App() {
 
-let [calc, setCalc] = useState({
-  sign: "",
-  num: 0,
-  res: 0
-});
+  let [calc, setCalc] = useState({
+    sign: "",
+    num: 0,
+    res: 0
+  });
 
-const numClickHandler = (e) => {
-  e.preventDefault();
-  const value = e.target.innerHTML;
-  if (calc.num.length() < 16) {
+  const numClickHandler = (e) => {
+    e.preventDefault();
+    const value = e.target.innerHTML;
+    if (calc.num.length() < 16) {
+      setCalc({
+        ...calc,
+        num:
+          calc.num === 0 && value === "0"
+            ? "0"
+            : calc.num % 1 === 0
+              ? Number(calc.num + value)
+              : calc.num + value,
+        res: !calc.sign ? 0 : calc.res
+      });
+    }
+  }
+
+  const commaClickHandler = (e) => {
+    e.preventDefault();
+    const value = e.target.innerHTML;
     setCalc({
       ...calc,
-      num:
-      calc.num === 0 && value === "0"
-      ? "0"
-      : calc.num % 1 === 0
-      ? Number(calc.num + value)
-      : calc.num + value,
-      res: !calc.sign ? 0 : calc.res
+      num: !calc.num.toString().includes(".") ? calc.num + value : calc.num
     });
   }
-}
 
-const commaClickHandler = (e) => {
-  e.preventDefault();
-  const value = e.target.innerHTML;
-  setCalc({
-    ...calc,
-    num: !calc.num.toString().includes(".") ? calc.num + value : calc.num
-  });
-}
+  const signClickHandler = (e) => {
+    e.preventDefault();
+    const value = e.target.innerHTML;
+    setCalc({
+      ...calc,
+      sign: value,
+      res: !calc.res && calc.num ? calc.num : calc.res, // no previous calculation has been performed & there's a value in calc.num
+      num: 0
+    });
+  }
 
-const signClickHandler = (e) => {
-  e.preventDefault();
-  const value = e.target.innerHTML;
-  setCalc({
-    ...calc,
-    sign: value,
-    res: !calc.res && calc.num ? calc.num : calc.res, // no previous calculation has been performed & there's a value in calc.num
-    num: 0
-  });
-}
+  const equalsClickHandler = () => {
+    if (calc.sign && calc.num) {
+      const math = (a, b, sign) => {
+        sign === "+"
+          ? a + b
+          : sign === "-"
+            ? a - b
+            : sign === "X"
+              ? a * b
+              : a / b
+      }
+      setCalc({
+        ...calc,
+        res:
+          calc.num === 0 && calc.sign === "/"
+            ? "Cannot divide number by 0"
+            : math(Number(calc.res), Number(calc.num), calc.sign),
+        sign: "",
+        num: 0
+      });
+    }
+  }
 
   return (
     <div className="container">
@@ -72,18 +95,18 @@ const signClickHandler = (e) => {
                   value={btn}
                   onClick={
                     btn === "C"
-                    ? resetClickHandler
-                    : btn === "+-"
-                    ? invertClickHandler
-                    : btn === "%"
-                    ? percentClickHandler
-                    : btn === "="
-                    ? equalsClickHandler
-                    : btn === "/" || btn === "X" || btn === "-" || btn === "+"
-                    ? signClickHandler
-                    : btn === "."
-                    ? commaClickHandler
-                    : numClickHandler
+                      ? resetClickHandler
+                      : btn === "+-"
+                        ? invertClickHandler
+                        : btn === "%"
+                          ? percentClickHandler
+                          : btn === "="
+                            ? equalsClickHandler
+                            : btn === "/" || btn === "X" || btn === "-" || btn === "+"
+                              ? signClickHandler
+                              : btn === "."
+                                ? commaClickHandler
+                                : numClickHandler
                   }
                 />
               )
