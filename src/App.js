@@ -47,6 +47,17 @@ const commaClickHandler = (e) => {
   });
 }
 
+const signClickHandler = (e) => {
+  e.preventDefault();
+  const value = e.target.innerHTML;
+  setCalc({
+    ...calc,
+    sign: value,
+    res: !calc.res && calc.num ? calc.num : calc.res, // no previous calculation has been performed & there's a value in calc.num
+    num: 0
+  });
+}
+
   return (
     <div className="container">
       <Body>
