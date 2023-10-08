@@ -100,6 +100,15 @@ function App() {
     });
   }
 
+  const resetClickHandler = () => {
+    setCalc({
+      ...calc,
+      num: 0,
+      res: 0,
+      sign: ""
+    });
+  }
+
   return (
     <div className="container">
       <Body>
