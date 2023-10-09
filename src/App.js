@@ -5,6 +5,11 @@ import Screen from "./components/Screen";
 import ButtonBox from "./ButtonBox";
 import Button from "./Button";
 
+const toLocaleString = (num) =>
+  String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
+
+const removeSpaces = (num) => num.toString().replace(/\s/g, "");
+
 const btnValues = [
   ["C", "+-", "%", "/"],
   [7, 8, 9, "X"],
@@ -23,15 +28,15 @@ function App() {
   const numClickHandler = (e) => {
     e.preventDefault();
     const value = e.target.innerHTML;
-    if (calc.num.length() < 16) {
+    if (removeSpaces(calc.num).length < 16) {
       setCalc({
         ...calc,
         num:
           calc.num === 0 && value === "0"
             ? "0"
-            : calc.num % 1 === 0
-            ? Number(calc.num + value)
-            : calc.num + value,
+            : removeSpaces(calc.num) % 1 === 0
+              ? toLocaleString(Number(calc.num + value))
+              : toLocaleString(calc.num + value),
         res: !calc.sign ? 0 : calc.res,
       });
     }
@@ -59,20 +64,26 @@ function App() {
 
   const equalsClickHandler = () => {
     if (calc.sign && calc.num) {
-      const math = (a, b, sign) => 
+      const math = (a, b, sign) =>
         sign === "+"
           ? a + b
           : sign === "-"
-          ? a - b
-          : sign === "X"
-          ? a * b
-          : a / b;
+            ? a - b
+            : sign === "X"
+              ? a * b
+              : a / b;
       setCalc({
         ...calc,
         res:
           calc.num === 0 && calc.sign === "/"
             ? "Cannot divide number by 0"
-            : math(Number(calc.res), Number(calc.num), calc.sign),
+            : toLocaleString(
+              math(
+                Number(removeSpaces(calc.res)),
+                Number(removeSpaces(calc.num)),
+                calc.sign
+              )
+            ),
         sign: "",
         num: 0,
       });
@@ -80,8 +91,8 @@ function App() {
   };
 
   const percentClickHandler = () => {
-    let num = calc.num ? parseFloat(calc.num) : 0;
-    let res = calc.res ? parseFloat(calc.res) : 0;
+    let num = calc.num ? parseFloat(removeSpaces(calc.num)) : 0;
+    let res = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
     setCalc({
       ...calc,
       num: num / Math.pow(100, 1),
@@ -92,8 +103,8 @@ function App() {
 
   const invertClickHandler = () => {
     setCalc({
-      num: calc.num ? calc.num * -1 : 0,
-      res: calc.res ? calc.res * -1 : 0,
+      num: calc.num ? toLocaleString(removeSpaces(calc.num) * -1) : 0,
+      res: calc.res ? toLocaleString(removeSpaces(calc.res) * -1) : 0,
       sign: "",
     });
   };
@@ -122,16 +133,16 @@ function App() {
                   btn === "C"
                     ? resetClickHandler
                     : btn === "+-"
-                    ? invertClickHandler
-                    : btn === "%"
-                    ? percentClickHandler
-                    : btn === "="
-                    ? equalsClickHandler
-                    : btn === "/" || btn === "X" || btn === "-" || btn === "+"
-                    ? signClickHandler
-                    : btn === "."
-                    ? commaClickHandler
-                    : numClickHandler
+                      ? invertClickHandler
+                      : btn === "%"
+                        ? percentClickHandler
+                        : btn === "="
+                          ? equalsClickHandler
+                          : btn === "/" || btn === "X" || btn === "-" || btn === "+"
+                            ? signClickHandler
+                            : btn === "."
+                              ? commaClickHandler
+                              : numClickHandler
                 }
               />
             );
