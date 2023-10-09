@@ -59,7 +59,7 @@ function App() {
 
   const equalsClickHandler = () => {
     if (calc.sign && calc.num) {
-      const math = (a, b, sign) => {
+      const math = (a, b, sign) => 
         sign === "+"
           ? a + b
           : sign === "-"
@@ -67,7 +67,6 @@ function App() {
           : sign === "X"
           ? a * b
           : a / b;
-      };
       setCalc({
         ...calc,
         res:
