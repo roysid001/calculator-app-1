@@ -1,6 +1,7 @@
 .screen {
     display: flex;
-    background-color: yellow;
+    color: white;
+    background-color: transparent;
     margin-top: 1rem;
     padding: 0.5rem;
     width: 100%;
@@ -8,7 +9,7 @@
     justify-content: flex-end;
     align-items: center;
     font-size: larger;
-    border: 2px solid red;
+    border: 2px solid grey;
     border-radius: 5px;
     box-sizing: border-box;
 }

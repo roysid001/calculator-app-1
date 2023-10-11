@@ -4,7 +4,7 @@
     padding: 1.5rem;
     width: 25rem;
     height: 30rem;
-    border: 2px solid gray;
-    background-color: #8c9e5e;
+    border: 2px solid red;
+    background-color: transparent;
     border-radius: 9px;
 }
